@@ -240,7 +240,7 @@ export default function Screen() {
             </Surface>
             <Text
               align="center"
-              type={"bodySmall"}
+              type="callout"
               mt="xs"
               color={errors.avatar?.message ? "textError" : "textSecondary"}
               text={errors.avatar?.message ?? t("auth.form.avatarCaption")}

@@ -40,10 +40,13 @@ export { useTheme } from './hooks/useTheme';
 export { useSafeAreaInsets } from './hooks/useSafeAreaInsets';
 export { useLayoutSize } from './hooks/getLayoutSizes';
 export { useKeyboard } from './hooks/useKeyboard';
+export { useDocumentRenderer } from './hooks/useDocumentRenderer';
 // #endregion
 
 // #region Helpers
 export { hexToRgba } from './helpers/hexToRgba'
+export { isValidColorKey } from './helpers/isValidColorKey'
+export { getPressedStyle } from './helpers/getPressedStyle'
 // #endregion
 
 // #region Utils

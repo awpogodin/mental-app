@@ -50,7 +50,7 @@ export const Header = ({
         {typeof customTitle === "function" ? (
           customTitle({ children: headerTitle })
         ) : (
-          <Text align="center" text={headerTitle} type="labelLarge" />
+          <Text align="center" text={headerTitle} type="title3" />
         )}
       </Surface>
 

@@ -29,7 +29,7 @@ export const Subheader: React.FC<Props> = ({ title, icon, withDivider, children,
   return (
     <Surface {...rest}>
       <Surface flexDirection='row' justifyContent='space-between' alignItems="center">
-        <Text text={title} type="labelLarge" color="textSecondary" />
+        <Text text={title} type="headline" color="textSecondary" />
         {!!icon && (
           <Ionicons
           name={icon}

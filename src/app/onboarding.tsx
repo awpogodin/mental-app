@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Layout, Surface, Text, useTheme } from "@/lib/ui";
+import { Button, Layout, Text, useTheme } from "@/lib/ui";
 import { Redirect, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { useTranslation } from "react-i18next";
@@ -29,34 +29,27 @@ export default function Screen() {
       p="md"
       stickyFooter={
         <>
-        <Image
-          contentFit="cover"
-          style={{ width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: LOGO_SIZE, backgroundColor: colors.surfaceCardPurple }}
-          // TODO: use expo-asset?
-          source={require('../../assets/images/logo-transparent.png')}
-        />
-          <Text
-            mt="xxl"
-            type="headlineLarge"
-            text={t('onboarding.title')}
+          <Image
+            contentFit="cover"
+            style={{
+              width: LOGO_SIZE,
+              height: LOGO_SIZE,
+              borderRadius: LOGO_SIZE,
+              backgroundColor: colors.surfaceCardPurple,
+            }}
+            // TODO: use expo-asset?
+            source={require("../../assets/images/logo-transparent.png")}
           />
-          <Text
-            mt="md"
-            type="headlineSmall"
-            text={t('onboarding.subtitle')}
+          <Text mt="xxl" type="largeTitle" text={t("onboarding.title")} />
+          <Text mt="md" type="title3" color="textSecondary" text={t("onboarding.subtitle")} />
+          <Button
+            type="primary"
+            mt="xl"
+            text={t("onboarding.next")}
+            onPress={handleLogin}
           />
-          <Button type="primary" mt="xl" text={t('onboarding.next')} onPress={handleLogin} />
         </>
       }
-    >
-      <Surface flex={1} alignItems="center" justifyContent="center">
-        <Image
-          contentFit="cover"
-          style={{ flex: 1, width: '100%' }}
-          // TODO: use expo-asset
-          source={require('../../assets/images/logo-transparent.png')}
-        />
-      </Surface>
-    </Layout>
+    />
   );
 }

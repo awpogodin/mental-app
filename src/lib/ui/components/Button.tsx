@@ -166,7 +166,7 @@ const styles = createThemedStyles((theme) => ({
     marginRight: theme.spacings.xs,
   },
   text: {
-    ...theme.typography.titleMedium,
+    ...theme.typography.body,
   },
 
   buttonPrimary: {

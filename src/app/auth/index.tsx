@@ -7,10 +7,11 @@ import { REQUEST_CODE } from "@/lib/gql";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
+import i18n from "@/lib/i18n";
 
 const schema = yup
   .object({
-    email: yup.string().email().required().transform((v: string) => v.toLocaleLowerCase()),
+    email: yup.string().email(i18n.t("common.validation.email")).required(i18n.t("common.validation.required")).transform((v: string) => v.toLocaleLowerCase()),
   })
   .required();
 
@@ -70,9 +71,8 @@ export default function Screen() {
         />
       }
     >
-      <Text type="headlineLarge" text={t("auth.index.title")} />
+      <Text type="largeTitle" text={t("auth.index.title")} />
       <Text
-        type="bodyLarge"
         color="textSecondary"
         text={t("auth.index.description")}
         mt="md"
@@ -86,9 +86,10 @@ export default function Screen() {
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
-            placeholder={"email@mail.com"}
+            placeholder={t('auth.index.placeholder')}
             caption={errors.email?.message}
             error={!!errors.email?.message}
+            inputMode="email"
             mt="md"
           />
         )}

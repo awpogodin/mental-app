@@ -71,8 +71,8 @@ export const MenuItem: React.FC<Props> = ({
         style={chatItemStyle}
       >
         <Surface flex={1}>
-          <Text type="titleMedium" text={title}/>
-          {!!description && (<Text type="labelLarge" color="textSecondary" text={description}/>)}
+          <Text text={title}/>
+          {!!description && (<Text type="subheadline" color="textSecondary" text={description}/>)}
         </Surface>
       </Pressable>
     </Surface>

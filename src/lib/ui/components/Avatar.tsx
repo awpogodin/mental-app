@@ -179,21 +179,21 @@ const styles = createThemedStyles((theme) => ({
   text: {
     color: theme.colors.textDefault,
     align: "center",
-    ...theme.typography.titleSmall,
+    ...theme.typography.default,
   },
   textXS: {
-    ...theme.typography.labelSmall,
+    ...theme.typography.caption2,
     fontSize: 8,
     lineHeight: 12,
   },
   textS: {
-    ...theme.typography.labelSmall,
+    ...theme.typography.caption2,
   },
   textM: {
-    ...theme.typography.titleSmall,
+    ...theme.typography.default,
   },
   textL: {
-    ...theme.typography.headlineLarge,
+    ...theme.typography.largeTitle,
   },
   avatar: {
     flexDirection: "row",

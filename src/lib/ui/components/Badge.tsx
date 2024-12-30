@@ -26,12 +26,12 @@ export const Badge: React.FC<Props> = ({ text, icon, color = 'text', ...rest }) 
   const { colors } = useTheme()
 
   return (
-    <Surface p={['xxs', 'xs']} flexDirection='row' style={{
+    <Surface p="xs" flexDirection='row' style={{
       // eslint-disable-next-line no-magic-numbers
       backgroundColor: hexToRgba(colors[color], 0.1),
     }} br="l" {...rest}>
       {icon}
-      <Text type="bodySmall" ml={!!icon && 'xs'} color={color} text={text}/>
+      <Text type="footnote" ml={!!icon && 'xs'} color={color} text={text}/>
     </Surface>
   );
 };

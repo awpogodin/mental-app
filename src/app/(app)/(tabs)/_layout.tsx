@@ -24,10 +24,8 @@ export default function TabLayout() {
   });
 
   const handleAddEntry = () => {
-    console.log("add entry");
     if (isLoggedIn) {
-      // TODO: add route for adding entry
-      // router.navigate("/event-form");
+      router.navigate("/entry-form");
       return;
     }
     router.navigate("/auth");
@@ -51,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="resources"
         options={{
-          title: "Resources",
+          title: "",
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
             <Ionicons
@@ -76,9 +74,7 @@ export default function TabLayout() {
           tabBarButton: ({ children, ...rest }) => (
             <Pressable {...rest} onPress={handleAddEntry}>
               {({ pressed }) => (
-                <Surface
-                  style={{ opacity: pressed ? 0.5 : 1 }}
-                >
+                <Surface style={{ opacity: pressed ? 0.5 : 1 }}>
                   {children}
                 </Surface>
               )}

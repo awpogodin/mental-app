@@ -18,6 +18,10 @@ export default function Layout() {
     <Stack screenOptions={{ headerShadowVisible: false, title: "" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
       <Stack.Screen
+        name="entry-form"
+        options={{ headerShown: false, presentation: "modal", title: '' }}
+      />
+      <Stack.Screen
         name="settings"
         options={{ headerShown: false, presentation: "modal", title: '' }}
       />

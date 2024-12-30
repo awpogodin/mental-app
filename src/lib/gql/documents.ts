@@ -67,6 +67,13 @@ export const GET_PROFILE = gql(`
         ...ImageFieldFragment
       }
     }
+    entries(where: { createdBy: { id: { equals: $id }}}, orderBy: [{ date: desc }], take: 15) {
+      id
+      emotion
+      situation
+      thoughts
+      date
+    }
   }
 `);
 
@@ -78,6 +85,75 @@ export const UPDATE_PROFILE = gql(`
       avatar {
         ...ImageFieldFragment
       }
+    }
+  }
+`);
+
+export const GET_POSTS = gql(`
+  query GetPosts ($where: PostWhereInput, $take: Int, $skip: Int) {
+    posts(where: $where, take: $take, skip: $skip) {
+      id
+      name
+      category {
+        id
+        name
+        color
+      }
+      publishedAt
+    }
+  }
+`);
+
+export const GET_POST = gql(`
+  query GetPost ($where: PostWhereUniqueInput!) {
+    post(where: $where) {
+      id
+      name
+      category {
+        id
+        name
+        color
+      }
+      content {
+        document
+      }
+      publishedAt
+    }
+  }
+`);
+
+export const GET_ENTRY = gql(`
+  query GetEntry ($where: EntryWhereUniqueInput!) {
+    entry(where: $where) {
+      id
+      emotion
+      situation
+      thoughts
+      date
+    }
+  }
+`);
+
+export const CREATE_ENTRY = gql(`
+  mutation CreateEntry ($data: EntryCreateInput!) {
+    createEntry(data: $data) {
+      id
+      emotion
+      situation
+      thoughts
+      date
+    }
+  }
+`);
+
+export const UPDATE_ENTRY = gql(`
+  mutation UpdateEntry ($where: EntryWhereUniqueInput!, $data: EntryUpdateInput!) {
+    updateEntry(where: $where, data: $data) {
+      id
+      emotion
+      situation
+      thoughts
+      date
     }
   }
 `);

@@ -79,7 +79,7 @@ const styles = createThemedStyles((theme) => ({
     opacity: 0.5
   },
   pinCodeText: {
-    ...theme.typography.headlineMedium,
+    ...theme.typography.title3,
     color: theme.colors.text,
   },
   focusStick: {},
@@ -88,7 +88,7 @@ const styles = createThemedStyles((theme) => ({
   },
   captionText: {
     marginTop: theme.spacings.md,
-    ...theme.typography.bodySmall,
+    ...theme.typography.callout,
     color: theme.colors.textSecondary,
   },
   errorCaptionText: {

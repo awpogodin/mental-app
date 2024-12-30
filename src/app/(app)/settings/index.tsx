@@ -34,9 +34,9 @@ export default function SettingsScreen() {
             }
           />
           <Surface gap="xs">
-            <Text type="titleMedium" text={currentUser.email ?? ""} />
+            <Text text={currentUser.email ?? ""} />
             <Text
-              type="titleSmall"
+              type="callout"
               color="textSecondary"
               text={currentUser.name ?? ""}
             />

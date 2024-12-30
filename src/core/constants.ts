@@ -1,34 +1,64 @@
-import { EntryType } from "../types/types";
+import i18n from "@/lib/i18n";
 
-export const entryTypeList = [
-  { id: "party", emoji: "🎉", label: "Вечеринка" },
-  { id: "dinner", emoji: "🍽️", label: "Ужин" },
-  { id: "sport", emoji: "🏋️", label: "Спорт" },
-  { id: "culture", emoji: "🎭", label: "Культура" },
-  { id: "work", emoji: "💼", label: "Работа" },
-  { id: "study", emoji: "🎓", label: "Учеба" },
-  { id: "art", emoji: "🎨", label: "Искусство" },
-  { id: "music", emoji: "🎵", label: "Музыка" },
-  { id: "nature", emoji: "🏞️", label: "Природа" },
-  { id: "games", emoji: "🎮", label: "Игры" },
-  { id: "travel", emoji: "✈️", label: "Путешествия" },
-  { id: "birthday", emoji: "🎂", label: "День рождения" },
-  { id: "wedding", emoji: "💍", label: "Свадьба" },
-  { id: "kids_party", emoji: "👶", label: "Детский праздник" },
-  { id: "new_year", emoji: "🎄", label: "Новый год" },
-  { id: "anniversary", emoji: "🥳", label: "Юбилей" },
-  { id: "friends_meeting", emoji: "🍻", label: "Встреча друзей" },
-  { id: "competition", emoji: "🏆", label: "Соревнование" },
-  { id: "meeting", emoji: "🧑‍🤝‍🧑", label: "Встреча" },
-] as const;
-
-export const entryTypeMap: Record<EntryType, { emoji: string; label: string }> =
+export const emotions = [
   {
-    party: { emoji: "🎉", label: "Вечеринка" },
-    birthday: { emoji: "🎂", label: "День\n рождения" },
-    newYear: { emoji: "🎄", label: "Новый\n год" },
-    kidsParty: { emoji: "👶", label: "Детский\n праздник" },
-    anniversary: { emoji: "🥳", label: "Юбилей" },
-    friendsMeeting: { emoji: "🍻", label: "Встреча\n друзей" },
-    meeting: { emoji: "🧑‍🤝‍🧑", label: "Встреча" },
-  };
+    id: "joy",
+    title: i18n.t("emotions.joy.title"),
+    description: i18n.t("emotions.joy.description"),
+    source: require("../../assets/images/emotions/joy.png"),
+  },
+  {
+    id: "sadness",
+    title: i18n.t("emotions.sadness.title"),
+    description: i18n.t("emotions.sadness.description"),
+    source: require("../../assets/images/emotions/sadness.png"),
+  },
+  {
+    id: "anger",
+    title: i18n.t("emotions.anger.title"),
+    description: i18n.t("emotions.anger.description"),
+    source: require("../../assets/images/emotions/anger.png"),
+  },
+  {
+    id: "fear",
+    title: i18n.t("emotions.fear.title"),
+    description: i18n.t("emotions.fear.description"),
+    source: require("../../assets/images/emotions/fear.png"),
+  },
+  {
+    id: "surprise",
+    title: i18n.t("emotions.surprise.title"),
+    description: i18n.t("emotions.surprise.description"),
+    source: require("../../assets/images/emotions/surprise.png"),
+  },
+  {
+    id: "disgust",
+    title: i18n.t("emotions.disgust.title"),
+    description: i18n.t("emotions.disgust.description"),
+    source: require("../../assets/images/emotions/disgust.png"),
+  },
+  {
+    id: "guilt",
+    title: i18n.t("emotions.guilt.title"),
+    description: i18n.t("emotions.guilt.description"),
+    source: require("../../assets/images/emotions/guilt.png"),
+  },
+  {
+    id: "shame",
+    title: i18n.t("emotions.shame.title"),
+    description: i18n.t("emotions.shame.description"),
+    source: require("../../assets/images/emotions/shame.png"),
+  },
+  {
+    id: "calm",
+    title: i18n.t("emotions.calm.title"),
+    description: i18n.t("emotions.calm.description"),
+    source: require("../../assets/images/emotions/calm.png"),
+  },
+  {
+    id: "interest",
+    title: i18n.t("emotions.interest.title"),
+    description: i18n.t("emotions.interest.description"),
+    source: require("../../assets/images/emotions/interest.png"),
+  },
+];

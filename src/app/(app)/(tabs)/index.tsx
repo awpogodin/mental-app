@@ -76,20 +76,20 @@ export default function Tab() {
           </Surface>
         ))}
       </ScrollView>
-      <Text type="titleLarge" text="Start a conversation" mt="md" />
+      <Text type="title2" text="Start a conversation" mt="md" />
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ marginHorizontal: -spacings.md, marginTop: spacings.xxs }}
       >
         <Surface p="md" br="l" bg="surfacePrimary" ml="md" height={150} width={150}>
-          <Text type="labelLarge" color="textPrimary" text="Just chat" />
+          <Text type="body" color="textPrimary" text="Just chat" />
         </Surface>
         <Surface p="md" br="l" bg="surfaceSecondary" ml="md" height={150} width={150}>
-          <Text type="labelLarge" text="Personal growth" />
+          <Text type="body" text="Personal growth" />
         </Surface>
         <Surface p="md" br="l" bg="surfaceSecondary" ml="md" height={150} width={150}>
-          <Text type="labelLarge" text="Learning" />
+          <Text type="body" text="Learning" />
         </Surface>
       </ScrollView>
     </Surface>

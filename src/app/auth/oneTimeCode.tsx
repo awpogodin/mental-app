@@ -106,9 +106,8 @@ export default function Screen() {
         />
       }
     >
-      <Text type="headlineLarge" text={i18n.t("auth.oneTimeCode.title")} />
+      <Text type="largeTitle" text={i18n.t("auth.oneTimeCode.title")} />
       <Text
-        type="bodyLarge"
         color="textSecondary"
         text={i18n.t("auth.oneTimeCode.description", {
           email,

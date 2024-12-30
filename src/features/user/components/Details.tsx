@@ -1,32 +1,62 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
   Avatar,
   Button,
+  getPressedStyle,
   Layout,
   SectionList,
   Skeleton,
   Surface,
   Text,
 } from "@/lib/ui";
-import { RefreshControl } from "react-native";
+import { Image } from "expo-image";
+import {
+  Pressable,
+  RefreshControl,
+  SectionListData,
+  SectionListRenderItem,
+} from "react-native";
 import { useRouter } from "expo-router";
 import i18n from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { GET_PROFILE } from "@/lib/gql";
+import { Entry } from "@/lib/gql/__generated__/graphql";
+import { emotions } from "@/core/constants";
+import { dayjs } from "@/lib/dayjs";
+import { useTranslation } from "react-i18next";
+
+type Section = {
+  title: string;
+  data: Item[];
+};
+
+type Item = Pick<Entry, "id" | "emotion" | "situation" | "thoughts" | "date">;
 
 type Props = { id: string };
 
-export const Details: React.FC<Props> = ({ id }) => {
-  const { currentUser } = useAuth();
+const EMOJI_SIZE = 30;
 
-  const isCurrentUser = id === currentUser?.id;
+export const Details: React.FC<Props> = ({ id }) => {
+  const { t } = useTranslation();
+  const { currentUser } = useAuth();
 
   const { data, refetch, networkStatus } = useQuery(GET_PROFILE, {
     variables: { id },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
   });
+
+  const sections = useMemo(() => {
+    return [
+      {
+        title: t("profile.entries"),
+        data: data?.entries ?? [],
+      },
+    ];
+  }, [data]);
+
+  console.log(`sections=${JSON.stringify(sections)}`);
 
   const router = useRouter();
 
@@ -91,10 +121,86 @@ export const Details: React.FC<Props> = ({ id }) => {
     title = name;
   }
 
-  const renderButtons = () => {
-    if (isCurrentUser) {
-      return <Button text={i18n.t("profile.edit")} onPress={handleEdit} />;
+  const renderSectionHeader = ({
+    section: { title, data },
+  }: {
+    section: SectionListData<Item, Section>;
+  }) => {
+    if (!data.length || !title) {
+      return null;
     }
+
+    return <Surface flexDirection="row" alignItems="center" justifyContent="space-between" mt="md">
+      <Text type="subheadline" color="textSecondary" text={title} />
+      <Pressable hitSlop={12}>
+        {({ pressed }) => (
+          <Text style={getPressedStyle(pressed)} type="subheadline" text={t('profile.seeAll')} />
+        )}
+      </Pressable>
+    </Surface>;
+  };
+
+  const renderItem: SectionListRenderItem<Item> = ({
+    item: { id, emotion, situation, thoughts, date },
+  }) => {
+    const handlePress = () => {};
+    const currentEmotion = emotions.find((e) => e.id === emotion);
+    if (!currentEmotion) {
+      return null;
+    }
+    return (
+      <Pressable onPress={handlePress} key={id}>
+        {({ pressed }) => (
+          <Surface
+            p="md"
+            br="l"
+            bg="surfaceSecondary"
+            style={getPressedStyle(pressed)}
+            flexDirection="row"
+            gap="md"
+            mt="md"
+          >
+            <Surface>
+              <Image
+                contentFit="cover"
+                style={{
+                  width: EMOJI_SIZE,
+                  height: EMOJI_SIZE,
+                }}
+                source={currentEmotion.source}
+              />
+            </Surface>
+            <Surface flex={1}>
+              <Text type="headline" text={currentEmotion.title} />
+              <Text
+                type="caption1"
+                color="textSecondary"
+                text={dayjs(date).calendar(null, {
+                  sameDay: t("common.calendar.sameDay"),
+                  lastDay: t("common.calendar.lastDay"),
+                  nextDay: t("common.calendar.nextDay"),
+                  lastWeek: t("common.calendar.lastWeek"),
+                  nextWeek: t("common.calendar.nextWeek"),
+                  sameElse: t("common.calendar.sameElse"),
+                })}
+              />
+              {!!situation && (
+                <Text type="subheadline" text={situation} numberOfLines={2} mt="xs" />
+              )}
+              {!!thoughts && (
+                <Text
+                  type="footnote"
+                  color="textSecondary"
+                  text={thoughts}
+                  mt="xs"
+                  numberOfLines={3}
+                />
+              )}
+            </Surface>
+          </Surface>
+        )}
+      </Pressable>
+    );
   };
 
   const listHeader = (
@@ -106,10 +212,8 @@ export const Details: React.FC<Props> = ({ id }) => {
           source={avatar ? { uri: avatar.url } : undefined}
         />
       </Surface>
-      {!!title && (
-        <Text type="titleMedium" mt="md" text={title} align="center" />
-      )}
-      <Surface mt="md">{renderButtons()}</Surface>
+      {!!title && <Text type="title3" mt="md" text={title} align="center" />}
+      <Button mt="md" text={i18n.t("profile.edit")} onPress={handleEdit} />
       <Surface
         mt="md"
         height={1}
@@ -120,8 +224,10 @@ export const Details: React.FC<Props> = ({ id }) => {
   );
 
   return (
-    <SectionList
-      sections={[]}
+    <SectionList<Item, Section>
+      sections={sections}
+      renderItem={renderItem}
+      renderSectionHeader={renderSectionHeader}
       ListHeaderComponent={listHeader}
       p="md"
       refreshControl={

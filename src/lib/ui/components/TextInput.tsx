@@ -122,7 +122,10 @@ type Props = Pick<FlexboxProps, "flex"> & {
   getImperativeHandlers?: (
     ref: RefObject<NativeTextInput>
   ) => Partial<TextInputHandles>;
-} & Pick<React.ComponentProps<typeof NativeTextInput>, "autoCapitalize" | 'editable'> &
+} & Pick<
+    React.ComponentProps<typeof NativeTextInput>,
+    "autoCapitalize" | "editable" | "inputMode"
+  > &
   OuterSpacingProps;
 
 export type TextInputHandles = Pick<
@@ -147,6 +150,7 @@ export const TextInput = forwardRef<TextInputHandles, Props>(
       mask,
       withClear,
       autoCapitalize,
+      inputMode,
       editable = true,
       onChangeText,
       onFocus,
@@ -214,9 +218,9 @@ export const TextInput = forwardRef<TextInputHandles, Props>(
         onChangeText(v);
       }
     };
-    
+
     const handleClear = () => {
-      handleChangeText('');
+      handleChangeText("");
     };
 
     const inputContainerStyle = StyleSheet.flatten([
@@ -256,6 +260,7 @@ export const TextInput = forwardRef<TextInputHandles, Props>(
           blurOnSubmit={blurOnSubmit}
           style={style.textInput}
           autoCapitalize={autoCapitalize}
+          inputMode={inputMode}
         />
       );
     };
@@ -335,7 +340,7 @@ const styles = createThemedStyles((theme) => ({
   },
   captionText: {
     marginTop: theme.spacings.xs,
-    ...theme.typography.bodySmall,
+    ...theme.typography.footnote,
     color: theme.colors.textSecondary,
   },
   errorCaptionText: {
