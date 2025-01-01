@@ -76,7 +76,7 @@ export default function Tab() {
           </Surface>
         ))}
       </ScrollView>
-      <Text type="title2" text="Start a conversation" mt="md" />
+      <Text type="title2" text={t('home.newChat')} mt="md" />
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

@@ -13,7 +13,7 @@ import {
 } from "@/lib/ui";
 import React, { useEffect, useMemo, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable, ScrollView } from "react-native";
+import { Pressable } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -62,7 +62,7 @@ export default function Screen() {
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
-  const { spacings, colors, iconSizes } = useTheme();
+  const { colors, iconSizes } = useTheme();
 
   const { currentUser } = useAuth();
 
@@ -319,7 +319,7 @@ export default function Screen() {
         open={isDateModalOpened}
         locale={i18n.language}
         maximumDate={now.toDate()}
-        date={date ? date : now.toDate()}
+        date={date ? dayjs(date).toDate() : now.toDate()}
         onConfirm={(date) => {
           setIsDateModalOpened(false);
           setValue("date", date, { shouldDirty: true });

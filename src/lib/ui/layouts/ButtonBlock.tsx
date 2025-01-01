@@ -52,8 +52,8 @@ export const ButtonBlock: React.FC<Props> = ({
   const blockStyle = useMemo(
     () =>
       StyleSheet.flatten([
-        localStyle.padding,
         type === "page" && {
+          ...localStyle.padding,
           ...localStyle.pageContainer,
         },
         !!insets.bottom &&

@@ -1,36 +1,25 @@
-import React, { useMemo, useRef, useState } from "react";
-import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { useAuth } from "@/lib/auth";
+import { DELETE_ENTRY, GET_ENTRIES } from "@/lib/gql";
+import { Entry } from "@/lib/gql/__generated__/graphql";
+import { Image } from "expo-image";
 import {
-  Avatar,
   BottomSheet,
   BottomSheetRef,
   Button,
   getPressedStyle,
   IconButton,
-  Layout,
   SectionList,
-  Skeleton,
   Surface,
   Text,
 } from "@/lib/ui";
-import { Image } from "expo-image";
-import {
-  Pressable,
-  RefreshControl,
-  SectionListData,
-  SectionListRenderItem,
-} from "react-native";
-import { useRouter } from "expo-router";
-import i18n from "@/lib/i18n";
-import { useAuth } from "@/lib/auth";
-import { DELETE_ENTRY, GET_PROFILE } from "@/lib/gql";
-import { Entry } from "@/lib/gql/__generated__/graphql";
-import { emotions } from "@/core/constants";
-import { dayjs } from "@/lib/dayjs";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-// TODO: подумать как разрешить импорты между фичами
-// eslint-disable-next-line import/no-restricted-paths
-import { entryFeature } from "../../entry";
+import { Pressable, RefreshControl, SectionListData, SectionListRenderItem } from "react-native";
+import { dayjs } from "@/lib/dayjs";
+import { emotions } from "@/core/constants";
+import { useRouter } from "expo-router";
+import { entryFeature } from "@/features/entry";
 
 type Section = {
   title: string;
@@ -39,13 +28,12 @@ type Section = {
 
 type Item = Pick<Entry, "id" | "emotion" | "situation" | "thoughts" | "date">;
 
-type Props = { id: string };
-
 const EMOJI_SIZE = 30;
 
-export const Details: React.FC<Props> = ({ id }) => {
-  const { t } = useTranslation();
+export default function Screen() {
   const { currentUser } = useAuth();
+  const router = useRouter();
+  const { t } = useTranslation();
 
   const [selectedEntryId, setSelectedEntryId] = useState<string | undefined>();
 
@@ -53,8 +41,9 @@ export const Details: React.FC<Props> = ({ id }) => {
 
   const [removeEntry, { loading: isRemovingEntry }] = useMutation(DELETE_ENTRY);
 
-  const { data, refetch, networkStatus } = useQuery(GET_PROFILE, {
-    variables: { id },
+  const { data, refetch, networkStatus } = useQuery(GET_ENTRIES, {
+    variables: { where: { createdBy: { id: { equals: currentUser?.id } } } },
+    skip: !currentUser?.id,
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
   });
@@ -62,29 +51,11 @@ export const Details: React.FC<Props> = ({ id }) => {
   const sections = useMemo(() => {
     return [
       {
-        title: t("profile.entries"),
+        title: "",
         data: data?.entries ?? [],
       },
     ];
-  }, [data?.entries, t]);
-
-  const router = useRouter();
-
-  const handleEdit = () => {
-    if (!currentUser) {
-      return;
-    }
-    router.navigate(`/auth/form?id=${currentUser.id}`);
-  };
-
-  const handleEntriesPress = () => {
-    router.navigate("/entries");
-  };
-
-  const handleEntryPress = (id: string) => {
-    setSelectedEntryId(id);
-    entrySheetRef.current?.present();
-  };
+  }, [data]);
 
   const handleEntryEdit = () => {
     if (!selectedEntryId) {
@@ -109,85 +80,25 @@ export const Details: React.FC<Props> = ({ id }) => {
     });
   };
 
-  // Id is not provided
-  if (!id) {
-    return null;
-  }
-
-  if (networkStatus === NetworkStatus.loading) {
-    return (
-      <Layout p="md">
-        <Skeleton>
-          <Surface
-            alignItems="center"
-          >
-            <Skeleton.Block width={100} height={100} rounded />
-            <Skeleton.Block mt="md" height={25} width={250} br="l" />
-          </Surface>
-          <Skeleton.Block mt="md" height={48} br="l" />
-          <Surface
-            mt="md"
-            height={1}
-            bg="surfaceTertiary"
-            style={{ opacity: 0.3 }}
-          />
-          <Surface mt="md" flexDirection="row" alignItems="center" justifyContent="space-between">
-          <Skeleton.Block height={20} width={100} br="l" />
-          <Skeleton.Block height={20} width={50} br="l" />
-          </Surface>
-          {[...Array(5).keys()].map((i) => (
-            <Skeleton.Block key={i} height={120} br="l" mt="md" />
-          ))}
-        </Skeleton>
-      </Layout>
-    );
-  }
-
-  if (!data?.user) {
-    return null;
-  }
-
-  const { name, avatar } = data.user;
-
-  let title;
-
-  if (name) {
-    title = name;
-  }
-
   const renderItemSeparator = () => {
-    return <Surface mt="md" />;
-  };
-
-  const renderSectionHeader = ({
-    section: { title, data },
-  }: {
-    section: SectionListData<Item, Section>;
-  }) => {
-    if (!data.length || !title) {
-      return null;
+      return (
+        <Surface mt="md" />
+      )
     }
 
-    return (
-      <Surface
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        mv="md"
-      >
-        <Text type="subheadline" color="textSecondary" text={title} />
-        <Pressable onPress={handleEntriesPress} hitSlop={12}>
-          {({ pressed }) => (
-            <Text
-              style={getPressedStyle(pressed)}
-              type="subheadline"
-              text={t("profile.seeAll")}
-            />
-          )}
-        </Pressable>
-      </Surface>
-    );
-  };
+  const renderSectionHeader = ({
+      section: { title, data },
+    }: {
+      section: SectionListData<Item, Section>;
+    }) => {
+      if (!data.length || !title) {
+        return null;
+      }
+  
+      return (
+        <Text type="subheadline" color="textSecondary" text={title} mv="md" />
+      );
+    };
 
   const renderItem: SectionListRenderItem<Item> = ({
     item: { id, emotion, situation, thoughts, date },
@@ -195,6 +106,12 @@ export const Details: React.FC<Props> = ({ id }) => {
     const handlePress = () => {
       handleEntryPress(id);
     };
+
+    const handleEntryPress = (id: string) => {
+      setSelectedEntryId(id);
+      entrySheetRef.current?.present();
+    };
+
     const currentEmotion = emotions.find((e) => e.id === emotion);
     if (!currentEmotion) {
       return null;
@@ -258,33 +175,12 @@ export const Details: React.FC<Props> = ({ id }) => {
     );
   };
 
-  const listHeader = (
-    <Surface>
-      <Surface alignItems="center">
-        <Avatar
-          size="l"
-          name={name}
-          source={avatar ? { uri: avatar.url } : undefined}
-        />
-      </Surface>
-      {!!title && <Text type="title3" mt="md" text={title} align="center" />}
-      <Button mt="md" text={i18n.t("profile.edit")} onPress={handleEdit} />
-      <Surface
-        mt="md"
-        height={1}
-        bg="surfaceTertiary"
-        style={{ opacity: 0.3 }}
-      />
-    </Surface>
-  );
-
   return (
     <>
       <SectionList<Item, Section>
         sections={sections}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
-        ListHeaderComponent={listHeader}
         ItemSeparatorComponent={renderItemSeparator}
         p="md"
         refreshControl={
@@ -319,4 +215,4 @@ export const Details: React.FC<Props> = ({ id }) => {
       </BottomSheet>
     </>
   );
-};
+}

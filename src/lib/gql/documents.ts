@@ -122,6 +122,18 @@ export const GET_POST = gql(`
   }
 `);
 
+export const GET_ENTRIES = gql(`
+  query GetEntries ($where: EntryWhereInput, $take: Int, $skip: Int) {
+    entries(where: $where, take: $take, skip: $skip) {
+      id
+      emotion
+      situation
+      thoughts
+      date
+    }
+  }
+`);
+
 export const GET_ENTRY = gql(`
   query GetEntry ($where: EntryWhereUniqueInput!) {
     entry(where: $where) {
@@ -149,6 +161,18 @@ export const CREATE_ENTRY = gql(`
 export const UPDATE_ENTRY = gql(`
   mutation UpdateEntry ($where: EntryWhereUniqueInput!, $data: EntryUpdateInput!) {
     updateEntry(where: $where, data: $data) {
+      id
+      emotion
+      situation
+      thoughts
+      date
+    }
+  }
+`);
+
+export const DELETE_ENTRY = gql(`
+  mutation DeleteEntry ($where: EntryWhereUniqueInput!) {
+    deleteEntry(where: $where) {
       id
       emotion
       situation

@@ -35,7 +35,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "MentalApp",
+          title: t('home.title'),
           tabBarLabel: "",
           tabBarIcon: ({ focused }) => (
             <Ionicons

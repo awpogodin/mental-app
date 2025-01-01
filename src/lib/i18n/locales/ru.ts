@@ -158,6 +158,10 @@ const resources = {
   notifications: {
     title: "Уведомления",
   },
+  home: {
+    title: 'MentalApp',
+    newChat: 'Начать разговор',
+  },
   chats: {
     title: "Чаты",
     search: "Поиск",
@@ -171,6 +175,11 @@ const resources = {
     edit: "Редактировать",
     entries: "Последние записи",
     seeAll: 'См. все',
+    entry: {
+      edit: 'Редактировать',
+      chat: 'Обсудить',
+      remove: 'Удалить',
+    },
   },
   settings: {
     title: "Настройки",

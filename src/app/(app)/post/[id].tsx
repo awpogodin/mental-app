@@ -4,20 +4,19 @@ import {
   Badge,
   isValidColorKey,
   Layout,
+  Skeleton,
   Surface,
   Text,
   useDocumentRenderer,
 } from "@/lib/ui";
-import { useQuery } from "@apollo/client";
+import { NetworkStatus, useQuery } from "@apollo/client";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 export default function Screen() {
   const { id } = useLocalSearchParams<{
     id: string;
   }>();
-  const { t } = useTranslation();
   const renderers = useDocumentRenderer();
 
   const { data, networkStatus } = useQuery(GET_POST, {
@@ -28,6 +27,22 @@ export default function Screen() {
     },
     notifyOnNetworkStatusChange: true,
   });
+
+  if (networkStatus === NetworkStatus.loading) {
+    return (
+      <Layout p="md">
+        <Skeleton>
+          <Skeleton.Block height={41} br="l" />
+          <Skeleton.Block mt="md" width={100} height={18} br="l" />
+          <Surface mt="xl">
+          {[...Array(15).keys()].map((i, index) => (
+            <Skeleton.Block key={i} height={22} br="l" mt={index === 0 ? undefined : 'md'} />
+          ))}
+          </Surface>
+        </Skeleton>
+      </Layout>
+    );
+  }
 
   if (!data?.post) {
     return null;

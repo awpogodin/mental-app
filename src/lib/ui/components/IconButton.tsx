@@ -14,7 +14,7 @@ type Props = {
    * Внешний вид кнопки
    * @default primary
    */
-  type?: "primary" | "secondary";
+  type?: "primary" | "secondary" | 'negative';
   /**
    * Имя иконки
    */
@@ -91,6 +91,8 @@ export const IconButton: React.FC<Props> = ({
 
     type === "secondary" && style.buttonSecondary,
 
+    type === "negative" && style.buttonNegative,
+
     pressed && style.buttonPressedOrDisabled,
     disabled && style.buttonPressedOrDisabled,
   ]);
@@ -98,6 +100,9 @@ export const IconButton: React.FC<Props> = ({
   const color = useMemo((): ColorKeys => {
     if (type === "primary") {
       return "iconPrimary";
+    }
+    if (type === "negative") {
+      return "iconError";
     }
     return "iconDefault";
   }, [type]);
@@ -151,6 +156,9 @@ const styles = createThemedStyles((theme) => ({
     backgroundColor: theme.colors.surfacePrimary,
   },
   buttonSecondary: {
+    backgroundColor: theme.colors.surfaceSecondary,
+  },
+  buttonNegative: {
     backgroundColor: theme.colors.surfaceSecondary,
   },
 
