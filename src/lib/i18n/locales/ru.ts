@@ -164,11 +164,9 @@ const resources = {
   },
   chats: {
     title: "Чаты",
-    search: "Поиск",
-    type: {
-      events: "Вечеринки",
-      personal: "Личные",
-    },
+  },
+  chat: {
+    inputPlaceholder: 'Введите сообщение',
   },
   profile: {
     title: "Профиль",

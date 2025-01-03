@@ -184,6 +184,7 @@ export const Layout: React.FC<Props> = ({
           stickyHeaderHiddenOnScroll={stickyHeaderHiddenOnScroll}
           stickyHeaderIndices={stickyHeaderIndices}
           bounces={bounces}
+          automaticallyAdjustKeyboardInsets
         >
           {children}
         </ScrollView>

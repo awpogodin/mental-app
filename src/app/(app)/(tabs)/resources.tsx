@@ -1,5 +1,5 @@
 import { GET_POSTS } from "@/lib/gql";
-import { Category, Post } from "@/lib/gql/__generated__/graphql";
+import { Post } from "@/lib/gql/__generated__/graphql";
 import {
   Badge,
   FlatList,
@@ -15,11 +15,9 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { ListRenderItem, Pressable, RefreshControl } from "react-native";
 
-type Item = {
-  category?: Pick<Category, "id" | "name" | "color"> | null;
-} & Pick<Post, "id" | "name">;
+type Item = Pick<Post, "id" | "name" | "tags">;
 
-export default function Screen() {
+export default function Tab() {
   const router = useRouter();
 
   const { data, refetch, networkStatus } = useQuery(GET_POSTS, {
@@ -36,7 +34,8 @@ export default function Screen() {
   };
 
   const renderItem: ListRenderItem<Item> = ({
-    item: { id, name, category }, index
+    item: { id, name, tags },
+    index,
   }) => {
     const handlePress = () => {
       handlePressArticle(id);
@@ -46,24 +45,23 @@ export default function Screen() {
         {({ pressed }) => (
           <Surface
             bg="surfaceSecondary"
-            mt={index === 0 ? undefined : 'md'}
+            mt={index === 0 ? undefined : "md"}
             p="md"
             br="l"
             style={getPressedStyle(pressed)}
           >
             {!!name && <Text type="headline" text={name} />}
-            <Surface mt="md" flexDirection="row">
-              {!!category?.name && (
-                <Badge
-                  text={category.name}
-                  color={
-                    isValidColorKey(category?.color)
-                      ? category.color
-                      : undefined
-                  }
-                />
-              )}
-            </Surface>
+            {!!tags?.length && (
+              <Surface mt="md" flexDirection="row" gap="xs">
+                {tags?.map((tag) => (
+                  <Badge
+                    key={tag.id}
+                    text={tag.name ?? ""}
+                    color={isValidColorKey(tag?.color) ? tag.color : undefined}
+                  />
+                ))}
+              </Surface>
+            )}
           </Surface>
         )}
       </Pressable>
@@ -75,7 +73,13 @@ export default function Screen() {
       <Layout p="md">
         <Skeleton>
           {[...Array(10).keys()].map((i, index) => (
-            <Surface key={i} bg="surfaceSecondary" mt={index === 0 ? undefined : 'md'} p="md" br="l">
+            <Surface
+              key={i}
+              bg="surfaceSecondary"
+              mt={index === 0 ? undefined : "md"}
+              p="md"
+              br="l"
+            >
               <Skeleton.Block height={22} br="l" />
               <Skeleton.Block mt="md" width={100} height={18} br="l" />
             </Surface>

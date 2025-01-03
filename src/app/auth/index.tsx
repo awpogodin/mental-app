@@ -89,6 +89,7 @@ export default function Screen() {
             placeholder={t('auth.index.placeholder')}
             caption={errors.email?.message}
             error={!!errors.email?.message}
+            onSubmitEditing={handleSubmit(handleNext)}
             inputMode="email"
             mt="md"
           />

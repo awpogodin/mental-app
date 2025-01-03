@@ -6,7 +6,7 @@ import { useNavigation, useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
 import { Pressable } from "react-native";
 
-export default function Screen() {
+export default function Tab() {
   const navigation = useNavigation();
   const router = useRouter();
 

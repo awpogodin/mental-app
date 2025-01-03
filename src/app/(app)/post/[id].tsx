@@ -35,9 +35,14 @@ export default function Screen() {
           <Skeleton.Block height={41} br="l" />
           <Skeleton.Block mt="md" width={100} height={18} br="l" />
           <Surface mt="xl">
-          {[...Array(15).keys()].map((i, index) => (
-            <Skeleton.Block key={i} height={22} br="l" mt={index === 0 ? undefined : 'md'} />
-          ))}
+            {[...Array(15).keys()].map((i, index) => (
+              <Skeleton.Block
+                key={i}
+                height={22}
+                br="l"
+                mt={index === 0 ? undefined : "md"}
+              />
+            ))}
           </Surface>
         </Skeleton>
       </Layout>
@@ -48,21 +53,22 @@ export default function Screen() {
     return null;
   }
 
-  const { name, category, content } = data?.post;
+  const { name, tags, content } = data?.post;
 
   return (
     <Layout scrollable p="md">
       {!!name && <Text type="largeTitle" text={name} />}
-      <Surface mt="md" flexDirection="row">
-        {!!category?.name && (
-          <Badge
-            text={category.name}
-            color={
-              isValidColorKey(category?.color) ? category.color : undefined
-            }
-          />
-        )}
-      </Surface>
+      {!!tags?.length && (
+        <Surface mt="md" flexDirection="row" gap="xs">
+          {tags?.map((tag) => (
+            <Badge
+              key={tag.id}
+              text={tag.name ?? ""}
+              color={isValidColorKey(tag?.color) ? tag.color : undefined}
+            />
+          ))}
+        </Surface>
+      )}
       <Surface mt="xl">
         {!!content?.document && (
           <DocumentRenderer document={content.document} renderers={renderers} />

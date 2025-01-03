@@ -94,7 +94,7 @@ export const GET_POSTS = gql(`
     posts(where: $where, take: $take, skip: $skip) {
       id
       name
-      category {
+      tags {
         id
         name
         color
@@ -109,7 +109,7 @@ export const GET_POST = gql(`
     post(where: $where) {
       id
       name
-      category {
+      tags {
         id
         name
         color
@@ -178,6 +178,67 @@ export const DELETE_ENTRY = gql(`
       situation
       thoughts
       date
+    }
+  }
+`);
+
+export const GET_CHATS = gql(`
+  query GetChats ($where: ChatWhereInput, $take: Int, $skip: Int) {
+    chats(where: $where, take: $take, skip: $skip) {
+      id
+      thread
+      tags {
+        id
+        name
+        color
+      }
+      latestMessage {
+        id
+        text
+        createdAt
+      }
+      createdBy {
+        id
+      }
+    }
+  }
+`);
+
+export const GET_CHAT = gql(`
+  query GetChat ($id: ID) {
+    chat(where: { id: $id }) {
+      id
+      thread
+      createdAt
+    }
+    messages(where: { chat: { id: { equals: $id }}}, orderBy: [{ createdAt: desc }]) {
+      id
+      text
+      createdBy {
+        id
+      }
+      createdAt
+    }
+  }
+`);
+
+export const CREATE_CHAT = gql(`
+  mutation CreateChat ($data: ChatCreateInput!) {
+    createChat(data: $data) {
+      id
+    }
+  }
+`);
+
+export const SEND_MESSAGE = gql(`
+  mutation SendMessage ($data: MessageCreateInput!) {
+    createMessage(data: $data) {
+      id
+      text
+      createdBy {
+        id
+      }
+      createdAt
     }
   }
 `);
