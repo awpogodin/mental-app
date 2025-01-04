@@ -164,6 +164,13 @@ const resources = {
   },
   chats: {
     title: "Чаты",
+    noChats: {
+      title: 'Нет чатов',
+      description: 'Создайте новый',
+    },
+    assistantType: {
+      psychologist: 'Психолог AI',
+    },
   },
   chat: {
     inputPlaceholder: 'Введите сообщение',

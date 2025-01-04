@@ -186,6 +186,7 @@ export const GET_CHATS = gql(`
   query GetChats ($where: ChatWhereInput, $take: Int, $skip: Int) {
     chats(where: $where, take: $take, skip: $skip) {
       id
+      assistantType
       thread
       tags {
         id
@@ -194,7 +195,8 @@ export const GET_CHATS = gql(`
       }
       latestMessage {
         id
-        text
+        content
+        role
         createdAt
       }
       createdBy {
@@ -213,7 +215,8 @@ export const GET_CHAT = gql(`
     }
     messages(where: { chat: { id: { equals: $id }}}, orderBy: [{ createdAt: desc }]) {
       id
-      text
+      content
+      role
       createdBy {
         id
       }
@@ -234,7 +237,8 @@ export const SEND_MESSAGE = gql(`
   mutation SendMessage ($data: MessageCreateInput!) {
     createMessage(data: $data) {
       id
-      text
+      content
+      role
       createdBy {
         id
       }

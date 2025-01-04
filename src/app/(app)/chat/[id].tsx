@@ -1,6 +1,6 @@
 import { useAuth } from "@/lib/auth";
 import { dayjs } from "@/lib/dayjs";
-import { CREATE_CHAT, GET_CHAT, SEND_MESSAGE } from "@/lib/gql";
+import { GET_CHAT, SEND_MESSAGE } from "@/lib/gql";
 import { Message } from "@/lib/gql/__generated__/graphql";
 import {
   FlatList,
@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@/lib/ui";
 import { useMutation, useQuery } from "@apollo/client";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, ListRenderItem, Platform } from "react-native";
@@ -22,7 +22,6 @@ type Item = Pick<Message, "id" | "content" | "createdBy" | "createdAt">;
 export default function Screen() {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  const router = useRouter();
   const navigation = useNavigation();
   const { id } = useLocalSearchParams<{
     id: string;
@@ -49,38 +48,9 @@ export default function Screen() {
 
   const [sendMessage, { loading: isSendingMessage }] =
     useMutation(SEND_MESSAGE);
-  const [createChat, { loading: isCreatingChat }] = useMutation(CREATE_CHAT);
 
   const handleSendMessage = () => {
-    if (!text || isSendingMessage || isCreatingChat) {
-      return;
-    }
-    if (!id) {
-      createChat({
-        variables: {
-          data: {
-            createdBy: { connect: { id: currentUser?.id } },
-          },
-        },
-        onCompleted: (res) => {
-          if (res.createChat?.__typename === "Chat") {
-            router.setParams({ id: res.createChat.id });
-            sendMessage({
-              variables: {
-                data: {
-                  content: text,
-                  chat: { connect: { id: res.createChat.id } },
-                  createdBy: { connect: { id: currentUser?.id } },
-                },
-              },
-              onCompleted: () => {
-                refetch();
-                setText(undefined);
-              },
-            });
-          }
-        },
-      });
+    if (!text || isSendingMessage) {
       return;
     }
     sendMessage({
@@ -172,7 +142,7 @@ export default function Screen() {
             <IconButton
               type="secondary"
               icon="send-outline"
-              loading={isSendingMessage || isCreatingChat}
+              loading={isSendingMessage}
               onPress={handleSendMessage}
             />
           </Surface>
