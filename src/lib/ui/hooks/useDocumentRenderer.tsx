@@ -1,9 +1,11 @@
 import React from "react";
 
 import { DocumentRendererProps } from "@keystone-6/document-renderer";
-import { Text } from "react-native";
+import { Linking, Pressable, Text } from "react-native";
 import { useTheme } from "./useTheme";
 import { Surface } from "../layouts/Surface";
+import { getPressedStyle } from "../helpers/getPressedStyle";
+import { TypographyKeys } from "../theme/types";
 
 export const useDocumentRenderer = () => {
   const { typography, colors, spacings } = useTheme();
@@ -32,6 +34,17 @@ export const useDocumentRenderer = () => {
           </Text>
         );
       },
+      link: ({ href, children }) => {
+        return (
+          <Pressable onPress={() => Linking.openURL(href)}>
+            {({ pressed }) => (
+              <Text style={{ ...typography.default, color: colors.textLink, ...getPressedStyle(pressed) }}>
+              {children}
+            </Text>
+            )}
+          </Pressable>
+        );
+      },
     },
     block: {
       paragraph: ({ children }) => {
@@ -40,6 +53,7 @@ export const useDocumentRenderer = () => {
             style={{
               ...typography.default,
               color: colors.textDefault,
+              marginVertical: spacings.md,
             }}
           >
             {children}
@@ -47,29 +61,18 @@ export const useDocumentRenderer = () => {
         );
       },
       heading: ({ level, children }) => {
+        let typographyType: TypographyKeys = 'headline'
         if (level === 1) {
-          return (
-            <Text style={{ ...typography.title1, color: colors.textDefault, marginBottom: spacings.sm }}>
-              {children}
-            </Text>
-          );
+          typographyType = 'title1'
         }
         if (level === 2) {
-          return (
-            <Text style={{ ...typography.title2, color: colors.textDefault, marginBottom: spacings.sm }}>
-              {children}
-            </Text>
-          );
+          typographyType = 'title2'
         }
         if (level === 3) {
-          return (
-            <Text style={{ ...typography.title3, color: colors.textDefault, marginBottom: spacings.sm }}>
-              {children}
-            </Text>
-          );
+          typographyType = 'title3'
         }
         return (
-          <Text style={{ ...typography.headline, color: colors.textDefault, marginBottom: spacings.sm }}>
+          <Text style={{ ...typography[typographyType], color: colors.textDefault, marginVertical: spacings.md }}>
             {children}
           </Text>
         );
@@ -80,6 +83,18 @@ export const useDocumentRenderer = () => {
             <Text style={{ ...typography.callout, color: colors.textDefault }}>
               {children}
             </Text>
+          </Surface>
+        );
+      },
+      list: ({ type, children }) => {
+        return (
+          <Surface ml="md">
+            {children.map((item, index) => (
+              <Text style={{ ...typography.default, color: colors.textDefault }} key={index}>
+                {type === 'ordered' ? `${index + 1}. ` : `• `}
+                {item}
+              </Text>
+            ))}
           </Surface>
         );
       },

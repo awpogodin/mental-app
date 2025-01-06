@@ -101,8 +101,7 @@ export const BottomSheet = <T, S extends DefaultSection = DefaultSection>(
     style.content,
     !isScrollable &&
       !!insets.bottom && { paddingBottom: insets.bottom + keyboardOffset },
-    !!layoutHeight &&
-      isScrollable && { paddingBottom: layoutHeight + keyboardOffset },
+    isScrollable && { paddingBottom: insets.bottom + layoutHeight + keyboardOffset },
   ]);
 
   const renderWrapper = () => {

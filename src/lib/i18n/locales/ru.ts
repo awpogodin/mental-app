@@ -160,7 +160,8 @@ const resources = {
   },
   home: {
     title: 'MentalApp',
-    newChat: 'Начать разговор',
+    bots: 'AI помощники',
+    posts: 'Статьи',
   },
   chats: {
     title: "Чаты",
@@ -168,9 +169,7 @@ const resources = {
       title: 'Нет чатов',
       description: 'Создайте новый',
     },
-    assistantType: {
-      psychologist: 'Психолог AI',
-    },
+    selectAssistant: 'Выберите AI помощника',
   },
   chat: {
     inputPlaceholder: 'Введите сообщение',

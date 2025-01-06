@@ -182,17 +182,46 @@ export const DELETE_ENTRY = gql(`
   }
 `);
 
-export const GET_CHATS = gql(`
-  query GetChats ($where: ChatWhereInput, $take: Int, $skip: Int) {
-    chats(where: $where, take: $take, skip: $skip) {
+export const GET_HOME = gql(`
+  query GetHome {
+    assistants {
       id
-      assistantType
-      thread
+      name
+      description
       tags {
         id
         name
         color
       }
+    }
+    posts(where: { published: { equals: true }}, take: 5) {
+      id
+      name
+      tags {
+        id
+        name
+        color
+      }
+      publishedAt
+    }
+  }
+`);
+
+export const GET_CHATS = gql(`
+  query GetChats ($where: ChatWhereInput, $take: Int, $skip: Int) {
+    chats(where: $where, take: $take, skip: $skip) {
+      id
+      assistant {
+        id
+        name
+        description
+        tags {
+          id
+          name
+          color
+        }
+      }
+      messagesCount
       latestMessage {
         id
         content
@@ -203,6 +232,16 @@ export const GET_CHATS = gql(`
         id
       }
     }
+    assistants {
+      id
+      name
+      description
+      tags {
+        id
+        name
+        color
+      }
+    }
   }
 `);
 
@@ -210,8 +249,19 @@ export const GET_CHAT = gql(`
   query GetChat ($id: ID) {
     chat(where: { id: $id }) {
       id
-      thread
-      createdAt
+      assistant {
+        id
+        name
+        description
+        tags {
+          id
+          name
+          color
+        }
+      }
+      createdBy {
+        id
+      }
     }
     messages(where: { chat: { id: { equals: $id }}}, orderBy: [{ createdAt: desc }]) {
       id

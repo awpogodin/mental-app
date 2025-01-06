@@ -42,6 +42,7 @@ export const colors = {
   textSuccess: '#4CAF50',
   textWarning: '#FFC107',
   textError: '#F44336',
+  textLink: '#007BFF',
   // #endregion
 
   // #region icon colors group
@@ -99,6 +100,7 @@ export const darkColors = {
   textSuccess: '#4CAF50',
   textWarning: '#FFC107',
   textError: '#F44336',
+  textLink: '#33BBFF',
   // #endregion
 
   // #region icon colors group

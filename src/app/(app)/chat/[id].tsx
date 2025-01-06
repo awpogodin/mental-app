@@ -42,7 +42,7 @@ export default function Screen() {
 
   useEffect(() => {
     navigation.setOptions({
-      title: data?.chat?.thread ?? '',
+      title: data?.chat?.assistant?.name ?? '',
     });
   }, [data, id, navigation]);
 
@@ -63,9 +63,9 @@ export default function Screen() {
       },
       onCompleted: () => {
         refetch();
-        setText(undefined);
       },
     });
+    setText(undefined);
   };
 
   const renderItem: ListRenderItem<Item> = ({
