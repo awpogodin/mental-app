@@ -49,6 +49,13 @@ export default function SettingsScreen() {
         <MenuItem title="Title" description="Description" />
       </Surface>
       <MenuItem title={t("settings.logout")} onPress={handleLogout} mt="xl" />
+      <Text
+        type="footnote"
+        color="textSecondary"
+        text="build"
+        mt="xxxl"
+        align="center"
+      />
     </Layout>
   );
 }

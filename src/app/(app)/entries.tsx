@@ -28,6 +28,27 @@ type Section = {
 
 type Item = Pick<Entry, "id" | "emotion" | "situation" | "thoughts" | "date">;
 
+type GroupedItems = Record<string, Item[]>
+
+const groupItemsByDate = (items: Item[]): GroupedItems =>
+  items.reduce<GroupedItems>((acc, item) => {
+    const isSameYear = dayjs(item.date).year() === dayjs().year()
+    const dateKey = isSameYear ? dayjs(item.date).format('MMMM') : dayjs(item.date).format('MMMM YYYY')
+
+    if (!acc[dateKey]) {
+      acc[dateKey] = [];
+    }
+
+    acc[dateKey].push(item);
+    return acc;
+  }, {});
+
+const prepareSectionsData = (groupedItems: GroupedItems): Section[] =>
+  Object.entries(groupedItems).map(([key, value]) => ({
+    title: key || "",
+    data: value,
+  }));
+
 const EMOJI_SIZE = 30;
 
 export default function Screen() {
@@ -48,14 +69,7 @@ export default function Screen() {
     fetchPolicy: "network-only",
   });
 
-  const sections = useMemo(() => {
-    return [
-      {
-        title: "",
-        data: data?.entries ?? [],
-      },
-    ];
-  }, [data]);
+  const sections = useMemo(() => prepareSectionsData(groupItemsByDate(data?.entries ?? [])), [data?.entries]);
 
   const handleEntryEdit = () => {
     if (!selectedEntryId) {

@@ -101,6 +101,11 @@ export const GET_POSTS = gql(`
       }
       publishedAt
     }
+    tags {
+      id
+      name
+      color
+    }
   }
 `);
 
@@ -124,7 +129,7 @@ export const GET_POST = gql(`
 
 export const GET_ENTRIES = gql(`
   query GetEntries ($where: EntryWhereInput, $take: Int, $skip: Int) {
-    entries(where: $where, take: $take, skip: $skip) {
+    entries(where: $where, take: $take, skip: $skip, orderBy: [{ date: desc }]) {
       id
       emotion
       situation

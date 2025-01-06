@@ -257,7 +257,7 @@ export default function Tab() {
             alignItems="center"
             gap="xs"
           >
-            <Text type="headline" text={t("chats.noChats.title")} />
+            <Text type="body" text={t("chats.noChats.title")} />
             <Text
               color="textSecondary"
               type="callout"

@@ -185,6 +185,14 @@ const resources = {
       remove: 'Удалить',
     },
   },
+  posts: {
+    noPosts: {
+      title: 'Нет материалов',
+    },
+  },
+  entries: {
+    title: 'Записи',
+  },
   settings: {
     title: "Настройки",
     logout: "Выйти",

@@ -19,12 +19,11 @@ export const colors = {
   surfaceTertiary: '#9E9E9E',
   surfaceError: '#F44336',
 
-  surfaceCardWhite: '#f5f2ea',
-  surfaceCardYellow: '#f5d867',
-  surfaceCardGreen: '#9aab63',
-  surfaceCardPurple: '#9e3dfb',
-  surfaceCardBlue: '#b8caeb',
-  surfaceCardPink: '#f5b8d8',
+  surfaceCardYellow: '#CC9900',
+  surfaceCardGreen: '#55723D',
+  surfaceCardPurple: '#551A8B',
+  surfaceCardBlue: '#336699',
+  surfaceCardPink: '#C476AA',
   // #endregion
 
   // #region foreground colors group
@@ -81,6 +80,12 @@ export const darkColors = {
   surfaceTertiary: '#9E9E9E',
   surfaceAccent: '#d7fc52',
   surfaceError: '#F44336',
+
+  surfaceCardYellow: '#f5d867',
+  surfaceCardGreen: '#9aab63',
+  surfaceCardPurple: '#9e3dfb',
+  surfaceCardBlue: '#b8caeb',
+  surfaceCardPink: '#f5b8d8',
   // #endregion
 
   // #region foreground colors group

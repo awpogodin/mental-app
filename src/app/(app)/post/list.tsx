@@ -9,62 +9,53 @@ import {
   Skeleton,
   Surface,
   Text,
-  useTheme,
 } from "@/lib/ui";
 import { NetworkStatus, useQuery } from "@apollo/client";
-import { useRouter } from "expo-router";
-import React from "react";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ListRenderItem,
-  Pressable,
-  RefreshControl,
-  ScrollView,
-} from "react-native";
+import { ListRenderItem, Pressable, RefreshControl } from "react-native";
 
 type Item = Pick<Post, "id" | "name" | "tags">;
 
-export default function Tab() {
+export default function Screen() {
   const { t } = useTranslation();
-  const { spacings } = useTheme();
   const router = useRouter();
+  const navigation = useNavigation();
+
+  const { tagId } = useLocalSearchParams<{
+    tagId: string;
+  }>();
 
   const { data, refetch, networkStatus } = useQuery(GET_POSTS, {
     variables: {
       where: {
-        published: { equals: true },
+        AND: [
+          {
+            published: { equals: true },
+          },
+          { tags: { some: { id: { equals: tagId } } } },
+        ],
       },
     },
     notifyOnNetworkStatusChange: true,
   });
 
-  const listHeader = data?.tags?.length ? (
-    <Surface mb="xl">
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ marginHorizontal: -spacings.md }}
-      >
-        {data?.tags?.map((tag) => (
-          <Pressable
-            key={tag.id}
-            hitSlop={spacings.xs}
-            onPress={() => router.navigate(`/post/list?tagId=${tag.id}`)}
-          >
-            {({ pressed }) => (
-              <Surface style={getPressedStyle(pressed)}>
-                <Badge
-                  ml="md"
-                  text={tag.name ?? ""}
-                  color={isValidColorKey(tag?.color) ? tag.color : undefined}
-                />
-              </Surface>
-            )}
-          </Pressable>
-        ))}
-      </ScrollView>
-    </Surface>
-  ) : undefined;
+  const selectedTag = useMemo(() => {
+    if (!tagId) {
+      return null;
+    }
+    return data?.tags?.find((tag) => tag.id === tagId) ?? null;
+  }, [data, tagId]);
+
+  useEffect(() => {
+    if (!selectedTag) {
+      return;
+    }
+    navigation.setOptions({
+      title: selectedTag.name,
+    });
+  }, [navigation, selectedTag]);
 
   const handlePressArticle = (id: string) => {
     router.navigate(`/post/${id}`);
@@ -130,7 +121,6 @@ export default function Tab() {
     <FlatList<Item>
       data={data?.posts}
       renderItem={renderItem}
-      ListHeaderComponent={listHeader}
       ItemSeparatorComponent={renderItemSeparator}
       ListEmptyComponent={
         <Text
