@@ -119,9 +119,6 @@ export default function Tab() {
     item: { id, assistant, latestMessage, messagesCount },
     index,
   }) => {
-    if ((messagesCount ?? 0) <= 1) {
-      return null;
-    }
     const handlePress = () => {
       handlePressChat(id);
     };

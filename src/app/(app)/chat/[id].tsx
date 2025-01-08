@@ -17,7 +17,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, ListRenderItem, Platform } from "react-native";
 
-type Item = Pick<Message, "id" | "content" | "createdBy" | "createdAt">;
+type Item = Pick<
+  Message,
+  "id" | "content" | "createdBy" | "createdAt" | "role"
+>;
 
 export default function Screen() {
   const { t } = useTranslation();
@@ -42,7 +45,7 @@ export default function Screen() {
 
   useEffect(() => {
     navigation.setOptions({
-      title: data?.chat?.assistant?.name ?? '',
+      title: data?.chat?.assistant?.name ?? "",
     });
   }, [data, id, navigation]);
 
@@ -98,10 +101,10 @@ export default function Screen() {
         bg="surfaceSecondary"
         mt="md"
         p="md"
-        br="l"
+        br="xl"
         maxWidth="80%"
         alignSelf="flex-start"
-        style={{ borderBottomRightRadius: 0 }}
+        style={{ borderBottomLeftRadius: 0 }}
       >
         <Text color="textDefault" text={content ?? ""} />
         <Text
